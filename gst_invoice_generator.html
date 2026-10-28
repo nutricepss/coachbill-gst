@@ -412,6 +412,157 @@
       .xl\:block { display: block !important; }
     }
 
+
+    /* === Mobile-First Dynamic App UI Enhancements (< 1024px) === */
+    .mobile-bottom-nav {
+      display: flex;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid #e2e8f0;
+      box-shadow: 0 -4px 20px -2px rgba(15, 23, 42, 0.08);
+      padding: 0.35rem 0.25rem calc(0.35rem + env(safe-area-inset-bottom, 0px));
+      justify-content: space-around;
+      align-items: center;
+    }
+    .mobile-nav-item {
+      flex: 1 1 0%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.15rem;
+      padding: 0.35rem 0.2rem;
+      border-radius: 0.75rem;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #64748b;
+      position: relative;
+      transition: all 0.18s ease;
+    }
+    .mobile-nav-item.active {
+      color: #4f46e5;
+      background-color: #eef2ff;
+      font-weight: 700;
+    }
+    .mobile-nav-badge {
+      position: absolute;
+      top: 2px;
+      right: 16%;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 9999px;
+      font-size: 9.5px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #4f46e5;
+      color: #ffffff;
+    }
+    .accordion-chevron {
+      transition: transform 0.22s ease;
+    }
+    .section-collapsed .accordion-chevron {
+      transform: rotate(-90deg);
+    }
+    .section-collapsed .accordion-body {
+      display: none !important;
+    }
+    .section-collapsed .accordion-header {
+      border-bottom-width: 0 !important;
+      padding-bottom: 0 !important;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .step-pill-btn {
+      transition: all 0.15s ease;
+    }
+    .step-pill-btn.active-step {
+      background-color: #4f46e5 !important;
+      color: #ffffff !important;
+      box-shadow: 0 1px 4px rgba(79, 70, 229, 0.4);
+    }
+
+    @media (max-width: 1023px) {
+      body {
+        padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+      }
+      .desktop-only-nav {
+        display: none !important;
+      }
+      .mobile-pane-hidden {
+        display: none !important;
+      }
+      #previewPane {
+        position: static !important;
+        top: auto !important;
+      }
+      #toastContainer {
+        bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px)) !important;
+        left: 0.75rem !important;
+        right: 0.75rem !important;
+      }
+      /* Comfortable touch targets on mobile phones */
+      input[type="text"],
+      input[type="number"],
+      input[type="date"],
+      input[type="password"],
+      select {
+        min-height: 42px;
+        font-size: 14px !important;
+      }
+      textarea {
+        font-size: 14px !important;
+      }
+    }
+
+    @media (max-width: 639px) {
+      header > div {
+        height: auto !important;
+        min-height: 3.5rem;
+        padding-top: 0.45rem;
+        padding-bottom: 0.45rem;
+        flex-wrap: wrap;
+        gap: 0.4rem !important;
+      }
+      #persistenceStatusText {
+        max-width: 78px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        vertical-align: bottom;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .mobile-bottom-nav,
+      .mobile-only-bar,
+      .mobile-step-footer,
+      #mobileA4SheetPreviewBox {
+        display: none !important;
+      }
+      .desktop-only-nav {
+        display: flex !important;
+      }
+      #controlsPane,
+      #previewPane,
+      #invoicePrintArea {
+        display: block !important;
+      }
+    }
+
     /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
@@ -488,8 +639,8 @@
         </div>
       </div>
 
-      <!-- Main View Switcher Tabs -->
-      <nav class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/80 overflow-x-auto shrink-0" aria-label="Workspace Views">
+      <!-- Main View Switcher Tabs (Desktop >= 1024px; Mobile uses Fixed Bottom App Bar) -->
+      <nav class="desktop-only-nav flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/80 overflow-x-auto shrink-0" aria-label="Workspace Views">
         <button type="button" id="tabBtnBuilder" onclick="switchWorkspaceTab('builder')" class="workspace-tab-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-white text-slate-900 shadow-sm flex items-center gap-1.5 whitespace-nowrap">
           <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
           <span>Invoice Editor</span>
@@ -511,37 +662,61 @@
       </nav>
 
       <!-- Action Buttons -->
-      <div class="flex items-center gap-1.5 sm:gap-2">
-        <button type="button" id="btnOpenCloudSyncModal" onclick="openCloudSyncModal()" class="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-xl text-xs font-semibold text-indigo-700 bg-indigo-50/90 border border-indigo-200 hover:bg-indigo-100 transition whitespace-nowrap shrink-0" title="Configure Two-Way PC & Android Phone Sync">
+      <div class="flex items-center gap-1 sm:gap-2">
+        <button type="button" id="btnOpenCloudSyncModal" onclick="openCloudSyncModal()" class="inline-flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 sm:py-2 rounded-xl text-xs font-semibold text-indigo-700 bg-indigo-50/90 border border-indigo-200 hover:bg-indigo-100 transition whitespace-nowrap shrink-0" title="Configure Two-Way PC & Android Phone Sync">
           <span id="headerSyncDot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
           <span id="persistenceStatusBadge"><span id="persistenceStatusText">PC ⇄ Mobile Sync</span></span>
         </button>
-        <button type="button" id="btnNewInvoice" onclick="createNewInvoice()" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition shadow-sm" title="Start Fresh Invoice">
+        <button type="button" id="btnNewInvoice" onclick="createNewInvoice()" class="inline-flex items-center gap-1 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition shadow-sm whitespace-nowrap shrink-0" title="Start Fresh Invoice">
           <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-          <span>New</span>
+          <span class="hidden sm:inline">New</span>
         </button>
-        <button type="button" id="btnSaveInvoice" onclick="saveCurrentInvoiceToHistory()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 transition whitespace-nowrap shrink-0">
+        <button type="button" id="btnSaveInvoice" onclick="saveCurrentInvoiceToHistory()" class="inline-flex items-center gap-1 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 transition whitespace-nowrap shrink-0" title="Save Invoice">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
           <span class="hidden sm:inline">Save Invoice</span>
         </button>
-        <button type="button" id="btnPrintInvoice" onclick="triggerPrintInvoice()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition shadow-sm whitespace-nowrap shrink-0" title="Print A4 Invoice">
+        <button type="button" id="btnPrintInvoice" onclick="triggerPrintInvoice()" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition shadow-sm whitespace-nowrap shrink-0" title="Print A4 Invoice">
           <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
           <span class="hidden md:inline">Print</span>
         </button>
-        <button type="button" id="btnDownloadPdf" onclick="downloadInvoicePdf()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition shadow-sm shadow-indigo-200 whitespace-nowrap shrink-0">
+        <button type="button" id="btnDownloadPdf" onclick="downloadInvoicePdf()" class="inline-flex items-center gap-1 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition shadow-sm shadow-indigo-200 whitespace-nowrap shrink-0">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          <span>Download PDF</span>
+          <span class="hidden sm:inline">Download </span><span>PDF</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Mobile Editor / Preview Toggle Bar -->
-  <div class="no-print lg:hidden bg-slate-900 text-white px-4 py-2 flex items-center justify-between text-xs">
-    <span class="font-medium text-slate-300">Live GST Total: <strong id="mobileQuickTotal" class="text-white font-mono-num">₹0.00</strong></span>
-    <div class="flex items-center gap-1 bg-slate-800 p-0.5 rounded-lg">
-      <button type="button" id="mobileViewControlsBtn" onclick="setMobilePane('controls')" class="px-2.5 py-1 rounded-md font-semibold bg-indigo-600 text-white">Controls</button>
-      <button type="button" id="mobileViewPreviewBtn" onclick="setMobilePane('preview')" class="px-2.5 py-1 rounded-md font-semibold text-slate-300">Live Invoice</button>
+  <!-- Mobile Sticky Live Total, Quick Share & Dynamic Step Bar (< 1024px) -->
+  <div class="no-print mobile-only-bar lg:hidden sticky top-14 z-30 bg-slate-900 text-white border-b border-slate-800 shadow-md">
+    <div class="px-3 py-2 flex items-center justify-between gap-2 text-xs">
+      <div class="flex items-center gap-2">
+        <div>
+          <span class="text-[10px] uppercase tracking-wider text-slate-400 block">Grand Total</span>
+          <strong id="mobileQuickTotal" class="text-sm sm:text-base text-white font-mono-num font-extrabold">₹34,809.00</strong>
+        </div>
+        <span id="mobileTaxModePill" class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-slate-800 text-indigo-300 border border-slate-700">IGST</span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <button type="button" id="btnMobileSharePdf" onclick="shareOrDownloadInvoicePdf()" class="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1 shadow-sm whitespace-nowrap" title="Share or Download GST Invoice PDF">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+          <span>Share</span>
+        </button>
+        <div class="flex items-center gap-0.5 bg-slate-800 p-0.5 rounded-lg border border-slate-700">
+          <button type="button" id="mobileViewControlsBtn" onclick="setMobilePane('controls')" class="px-2 py-1 rounded-md text-[11px] font-semibold bg-indigo-600 text-white">Controls</button>
+          <button type="button" id="mobileViewPreviewBtn" onclick="setMobilePane('preview')" class="px-2 py-1 rounded-md text-[11px] font-semibold text-slate-300">Live Invoice</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dynamic Step-by-Step Section Pills (Visible on Mobile Editor View) -->
+    <div id="mobileBuilderJumpBar" class="px-2.5 py-1.5 bg-slate-800/95 border-t border-slate-700/80 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[11px]">
+      <button type="button" data-step-target="secInvoiceMeta" onclick="jumpToBuilderSection('secInvoiceMeta')" class="step-pill-btn active-step px-2.5 py-1 rounded-full font-semibold bg-slate-700 text-slate-100 whitespace-nowrap shrink-0">1. Invoice Info</button>
+      <button type="button" data-step-target="secClientInfo" onclick="jumpToBuilderSection('secClientInfo')" class="step-pill-btn px-2.5 py-1 rounded-full font-semibold bg-slate-700 text-slate-100 whitespace-nowrap shrink-0">2. Client</button>
+      <button type="button" data-step-target="secLineItems" onclick="jumpToBuilderSection('secLineItems')" class="step-pill-btn px-2.5 py-1 rounded-full font-semibold bg-slate-700 text-slate-100 whitespace-nowrap shrink-0">3. Services</button>
+      <button type="button" data-step-target="secBankTerms" onclick="jumpToBuilderSection('secBankTerms')" class="step-pill-btn px-2.5 py-1 rounded-full font-semibold bg-slate-700 text-slate-100 whitespace-nowrap shrink-0">4. Bank &amp; Terms</button>
+      <button type="button" data-step-target="secSellerProfile" onclick="jumpToBuilderSection('secSellerProfile')" class="step-pill-btn px-2.5 py-1 rounded-full font-semibold bg-slate-700 text-slate-300 whitespace-nowrap shrink-0">5. My Business</button>
+      <button type="button" id="btnToggleAllSections" onclick="toggleAllBuilderSections()" class="ml-auto px-2.5 py-1 rounded-full font-semibold bg-indigo-950 text-indigo-300 border border-indigo-700 whitespace-nowrap shrink-0">Show All</button>
     </div>
   </div>
 
@@ -557,15 +732,22 @@
       <div id="viewBuilder" class="space-y-5">
 
         <!-- Quick Header Status & Invoice Type -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div id="secInvoiceMeta" class="builder-accordion-card bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+          <div onclick="toggleBuilderSection('secInvoiceMeta')" class="accordion-header cursor-pointer flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
             <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
-              <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">1. Invoice Metadata &amp; Tax Mode</h2>
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 shrink-0"></span>
+              <div>
+                <h2 class="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider">1. Invoice Metadata &amp; Tax Mode</h2>
+                <p id="secSummaryMeta" class="text-[11px] text-slate-500 lg:hidden">CB/2026-27/104 • TAX INVOICE</p>
+              </div>
             </div>
-            <span id="gstSupplyBadge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">Intra-State (CGST + SGST)</span>
+            <div class="flex items-center gap-2">
+              <span id="gstSupplyBadge" class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">Intra-State (CGST + SGST)</span>
+              <svg class="accordion-chevron w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </div>
           </div>
 
+          <div class="accordion-body space-y-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div>
               <label for="invDocType" class="block text-xs font-semibold text-slate-600 mb-1">Invoice Type</label>
@@ -614,21 +796,33 @@
               </select>
             </div>
           </div>
+          <div class="mobile-step-footer lg:hidden pt-2 border-t border-slate-100 flex items-center justify-between">
+            <button type="button" onclick="jumpToBuilderSection('secSellerProfile')" class="text-xs font-semibold text-slate-500 hover:text-slate-800">Edit My Business Info</button>
+            <button type="button" onclick="jumpToBuilderSection('secClientInfo')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm">Next: Student / Client &rarr;</button>
+          </div>
+          </div>
         </div>
 
         <!-- Coaching Business (Supplier) Details -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div id="secSellerProfile" class="builder-accordion-card bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+          <div onclick="toggleBuilderSection('secSellerProfile')" class="accordion-header cursor-pointer flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
             <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-              <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">2. Coaching Business Profile (Supplier)</h2>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
+              <div>
+                <h2 class="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider">2. Coaching Business Profile (Supplier)</h2>
+                <p id="secSummarySeller" class="text-[11px] text-slate-500 lg:hidden">ElevateMind Online Coaching • 07-Delhi (Tap to edit)</p>
+              </div>
             </div>
-            <button type="button" id="btnJumpLogo" onclick="switchWorkspaceTab('customize')" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
-              <span>Customize Logo &amp; Brand</span>
-              <span>&rarr;</span>
-            </button>
+            <div class="flex items-center gap-2">
+              <button type="button" id="btnJumpLogo" onclick="event.stopPropagation(); switchWorkspaceTab('customize')" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 whitespace-nowrap">
+                <span>Customize Logo &amp; Brand</span>
+                <span>&rarr;</span>
+              </button>
+              <svg class="accordion-chevron w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </div>
           </div>
 
+          <div class="accordion-body space-y-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div class="sm:col-span-2">
               <label for="sellerName" class="block text-xs font-semibold text-slate-600 mb-1">Coaching Brand / Registered Business Name</label>
@@ -696,16 +890,23 @@
               <input type="text" id="sellerAddress" value="Suite 402, Connaught Place, New Delhi - 110001 | +91 98110 45210" oninput="syncInvoiceFromInputs()" class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none">
             </div>
           </div>
+          <div class="mobile-step-footer lg:hidden pt-2 border-t border-slate-100 flex items-center justify-end">
+            <button type="button" onclick="jumpToBuilderSection('secClientInfo')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm">Next: Student / Client &rarr;</button>
+          </div>
+          </div>
         </div>
 
         <!-- Client / Student / Corporate Buyer Details -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
-          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+        <div id="secClientInfo" class="builder-accordion-card bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+          <div onclick="toggleBuilderSection('secClientInfo')" class="accordion-header cursor-pointer flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
             <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-              <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">3. Student / Client Billing Details</h2>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span>
+              <div>
+                <h2 class="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider">3. Student / Client Billing Details</h2>
+                <p id="secSummaryClient" class="text-[11px] text-slate-500 lg:hidden">Aarav Mehta • 27-Maharashtra</p>
+              </div>
             </div>
-            <div class="flex flex-wrap items-center gap-1.5">
+            <div onclick="event.stopPropagation()" class="flex flex-wrap items-center gap-1.5">
               <select id="savedClientSelect" onchange="loadSavedClient(this.value)" aria-label="Load saved client" class="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-700 focus:outline-none max-w-[200px]">
                 <option value="">Load Saved Client...</option>
               </select>
@@ -714,6 +915,7 @@
             </div>
           </div>
 
+          <div class="accordion-body space-y-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div class="sm:col-span-2">
               <label for="clientName" class="block text-xs font-semibold text-slate-600 mb-1">Student / Corporate Client Name</label>
@@ -781,20 +983,32 @@
               <input type="text" id="cohortMeta" value="Cohort #14 • Enrollment ID: EM-2026-884" oninput="syncInvoiceFromInputs()" class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs sm:text-sm text-slate-800 focus:border-indigo-500 focus:outline-none" placeholder="e.g. Q4 Leadership Batch">
             </div>
           </div>
+          <div class="mobile-step-footer lg:hidden pt-2 border-t border-slate-100 flex items-center justify-between">
+            <button type="button" onclick="jumpToBuilderSection('secInvoiceMeta')" class="text-xs font-semibold text-slate-500 hover:text-slate-800">&larr; Invoice Info</button>
+            <button type="button" onclick="jumpToBuilderSection('secLineItems')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm">Next: Coaching Services &rarr;</button>
+          </div>
+          </div>
         </div>
 
         <!-- Coaching Service Line Items & Quick Template Picker -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
-          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+        <div id="secLineItems" class="builder-accordion-card bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+          <div onclick="toggleBuilderSection('secLineItems')" class="accordion-header cursor-pointer flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
             <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
-              <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">4. Coaching Services &amp; Line Items</h2>
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 shrink-0"></span>
+              <div>
+                <h2 class="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider">4. Coaching Services &amp; Line Items</h2>
+                <p id="secSummaryItems" class="text-[11px] text-slate-500 lg:hidden">2 services • Total ₹34,809.00</p>
+              </div>
             </div>
-            <button type="button" id="btnManageTemplatesShortcut" onclick="switchWorkspaceTab('templates')" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800">
-              Manage Saved Templates &rarr;
-            </button>
+            <div class="flex items-center gap-2">
+              <button type="button" id="btnManageTemplatesShortcut" onclick="event.stopPropagation(); switchWorkspaceTab('templates')" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 whitespace-nowrap">
+                Manage Saved Templates &rarr;
+              </button>
+              <svg class="accordion-chevron w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </div>
           </div>
 
+          <div class="accordion-body space-y-4">
           <!-- Quick Insert from Saved Product/Service Templates -->
           <div class="bg-indigo-50/70 border border-indigo-100 rounded-xl p-3 space-y-2">
             <div class="flex items-center justify-between">
@@ -857,17 +1071,27 @@
             </button>
             <span class="text-[11px] text-slate-500">Tip: Click <strong>"Save as Template"</strong> on any row to add it to your reusable catalog.</span>
           </div>
+          <div class="mobile-step-footer lg:hidden pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+            <button type="button" onclick="jumpToBuilderSection('secBankTerms')" class="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700">Bank &amp; Terms</button>
+            <button type="button" onclick="handleMobileBottomNav('preview')" class="px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm">Preview A4 Invoice &rarr;</button>
+          </div>
+          </div>
         </div>
 
         <!-- Payment, Bank, UPI & Notes -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div id="secBankTerms" class="builder-accordion-card bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm space-y-4">
+          <div onclick="toggleBuilderSection('secBankTerms')" class="accordion-header cursor-pointer flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
             <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-teal-500"></span>
-              <h2 class="text-sm font-bold text-slate-900 uppercase tracking-wider">5. Bank, UPI QR &amp; Coaching Terms</h2>
+              <span class="w-2.5 h-2.5 rounded-full bg-teal-500 shrink-0"></span>
+              <div>
+                <h2 class="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider">5. Bank, UPI QR &amp; Coaching Terms</h2>
+                <p id="secSummaryBank" class="text-[11px] text-slate-500 lg:hidden">HDFC Bank • UPI QR Active (Tap to edit)</p>
+              </div>
             </div>
+            <svg class="accordion-chevron w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
           </div>
 
+          <div class="accordion-body space-y-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div>
               <label for="bankName" class="block text-xs font-semibold text-slate-600 mb-1">Bank Name &amp; Branch</label>
@@ -918,6 +1142,11 @@
 2. Digital course materials and recorded cohort sessions are licensed for single-attendee use only.
 3. Please quote the Invoice Number in NEFT/IMPS/UPI payment remarks.</textarea>
             </div>
+          </div>
+          <div class="mobile-step-footer lg:hidden pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+            <button type="button" onclick="saveCurrentInvoiceToHistory()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">✓ Save Invoice</button>
+            <button type="button" onclick="handleMobileBottomNav('preview')" class="px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white shadow-sm">Preview &amp; Download PDF &rarr;</button>
+          </div>
           </div>
         </div>
       </div>
@@ -1290,20 +1519,42 @@
 
     </section>
 
-    <!-- RIGHT PANE: Live A4 GST Tax Invoice Preview (7 Columns on Large Screens) -->
-    <section id="previewPane" class="lg:col-span-7 sticky top-20">
+    <!-- RIGHT PANE: Live A4 GST Tax Invoice Preview (7 Columns on Large Screens, Full-Screen Tab on Mobile) -->
+    <section id="previewPane" class="mobile-pane-hidden lg:col-span-7 sticky top-20">
       <div class="no-print mb-3 flex flex-wrap items-center justify-between gap-2 px-1">
         <div class="flex items-center gap-2">
           <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Live A4 GST Invoice Preview</span>
         </div>
-        <div class="flex items-center gap-2 text-xs text-slate-500">
+        <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500">
           <span id="previewTaxRuleHint" class="font-medium text-slate-600">07-Delhi &rarr; 27-Maharashtra (Inter-State IGST)</span>
+          <button type="button" id="btnToggleMobileA4Scale" onclick="toggleMobileA4FitScale()" class="lg:hidden px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
+            View: Exact A4 Sheet
+          </button>
         </div>
       </div>
 
+      <!-- Mobile Quick Export Action Strip inside Preview Tab (< 1024px) -->
+      <div class="no-print lg:hidden mb-3 grid grid-cols-3 gap-2">
+        <button type="button" onclick="downloadInvoicePdf()" class="py-2.5 px-3 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm flex items-center justify-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          <span>Download PDF</span>
+        </button>
+        <button type="button" onclick="shareOrDownloadInvoicePdf()" class="py-2.5 px-3 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm flex items-center justify-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+          <span>Share PDF</span>
+        </button>
+        <button type="button" onclick="triggerPrintInvoice()" class="py-2.5 px-3 rounded-xl text-xs font-bold text-slate-800 bg-white border border-slate-200 shadow-sm flex items-center justify-center gap-1.5">
+          <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+          <span>Print A4</span>
+        </button>
+      </div>
+
+      <!-- Mobile Exact Fit-to-Screen A4 Sheet Container (Renders crisp full-bleed A4 pages on mobile phones with pinch-to-zoom & zero table overflow) -->
+      <div id="mobileA4SheetPreviewBox" class="no-print lg:hidden space-y-3 mb-4"></div>
+
       <!-- Printable A4 Sheet Container -->
-      <div id="invoicePrintArea" class="invoice-paper rounded-2xl border border-slate-200/90 p-6 sm:p-8 md:p-10 max-w-[840px] mx-auto text-slate-800">
+      <div id="invoicePrintArea" class="invoice-paper rounded-2xl border border-slate-200/90 p-4 sm:p-8 md:p-10 max-w-[840px] mx-auto text-slate-800">
         <!-- Dynamic Invoice Content Rendered by JS -->
         <div id="invoiceRenderedContent">
         <div style="background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%); border: 1px solid #c7d2fe; border-left: 6px solid #4f46e5; padding: 20px; border-radius: 14px;">
@@ -1434,6 +1685,32 @@
     </section>
 
   </main>
+
+  <!-- Native-Style Android & Mobile Bottom Navigation Bar (< 1024px) -->
+  <nav id="mobileBottomNav" class="no-print mobile-bottom-nav lg:hidden" aria-label="Mobile App Navigation">
+    <button type="button" id="mNavBtnBuilder" onclick="handleMobileBottomNav('builder')" class="mobile-nav-item active">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+      <span>Editor</span>
+    </button>
+    <button type="button" id="mNavBtnPreview" onclick="handleMobileBottomNav('preview')" class="mobile-nav-item">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+      <span>Preview</span>
+    </button>
+    <button type="button" id="mNavBtnTemplates" onclick="handleMobileBottomNav('templates')" class="mobile-nav-item">
+      <span id="mobileNavTplBadge" class="mobile-nav-badge">6</span>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+      <span>Templates</span>
+    </button>
+    <button type="button" id="mNavBtnHistory" onclick="handleMobileBottomNav('history')" class="mobile-nav-item">
+      <span id="mobileNavHistBadge" class="mobile-nav-badge">2</span>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      <span>Invoices</span>
+    </button>
+    <button type="button" id="mNavBtnCustomize" onclick="handleMobileBottomNav('customize')" class="mobile-nav-item">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+      <span>Brand</span>
+    </button>
+  </nav>
 
   <!-- Toast Notification Banner -->
   <div id="toastContainer" class="no-print fixed bottom-5 right-5 z-50 pointer-events-none flex flex-col gap-2"></div>
@@ -2599,6 +2876,8 @@
       sel.innerHTML = `<option value="">-- Choose a saved coaching service template (${state.templates.length} available) --</option>` +
         state.templates.map(t => `<option value="${t.id}">${escapeHtml(t.title)} — ${formatINR(t.rate)} (SAC ${t.sac}, ${t.gstRate}% GST)</option>`).join("");
       document.getElementById("templateCountBadge").textContent = String(state.templates.length);
+      const mTplBadge = document.getElementById("mobileNavTplBadge");
+      if (mTplBadge) mTplBadge.textContent = String(state.templates.length);
     }
 
     function loadInvoiceStateIntoInputs() {
@@ -2769,15 +3048,21 @@
         return;
       }
 
-      container.innerHTML = state.invoice.items.map((item, idx) => `
+      const calcSnapshot = calculateInvoiceBreakdown(state.invoice);
+      container.innerHTML = state.invoice.items.map((item, idx) => {
+        const comp = calcSnapshot.computedItems[idx] || { lineTotal: 0 };
+        return `
         <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 space-y-2.5 transition hover:border-slate-300">
-          <div class="flex items-center justify-between gap-2">
-            <span class="text-xs font-bold text-slate-700">Service #${idx + 1}</span>
+          <div class="flex flex-wrap items-center justify-between gap-2">
             <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-slate-700">Service #${idx + 1}</span>
+              <span id="lineItemTotalBadge_${idx}" class="px-2 py-0.5 rounded-md text-[11px] font-mono-num font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">${formatINR(comp.lineTotal)}</span>
+            </div>
+            <div class="flex items-center gap-1.5">
               <button type="button" onclick="saveLineItemAsTemplate(${idx})" class="px-2 py-1 rounded-lg text-[11px] font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 transition" title="Save this service to your reusable template library">
-                ★ Save as Template
+                ★ Save Template
               </button>
-              <button type="button" onclick="removeLineItem(${idx})" class="p-1 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition" title="Remove Item">
+              <button type="button" onclick="removeLineItem(${idx})" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition" title="Remove Item">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
               </button>
             </div>
@@ -2794,14 +3079,18 @@
             </div>
             <div class="sm:col-span-12">
               <label class="block text-[11px] font-semibold text-slate-500 mb-0.5">Deliverables / Session Details</label>
-              <input type="text" value="${escapeHtml(item.description)}" oninput="updateLineItemField(${idx}, 'description', this.value)" class="w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-600 focus:border-indigo-500 focus:outline-none" placeholder="e.g. 4x 60-min live sessions + workbook">
+              <textarea rows="2" oninput="updateLineItemField(${idx}, 'description', this.value)" class="w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-600 focus:border-indigo-500 focus:outline-none leading-relaxed" placeholder="e.g. 4x 60-min live sessions + workbook">${escapeHtml(item.description)}</textarea>
             </div>
           </div>
 
           <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
             <div>
               <label class="block text-[11px] font-semibold text-slate-500 mb-0.5">Qty</label>
-              <input type="number" min="1" step="1" value="${item.qty}" oninput="updateLineItemField(${idx}, 'qty', this.value)" class="w-full rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-mono-num text-slate-900 focus:border-indigo-500 focus:outline-none">
+              <div class="flex items-center rounded-lg border border-slate-200 bg-white overflow-hidden">
+                <button type="button" onclick="stepLineItemQty(${idx}, -1)" class="px-2 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-100">−</button>
+                <input id="lineQtyInput_${idx}" type="number" min="1" step="1" value="${item.qty}" oninput="updateLineItemField(${idx}, 'qty', this.value)" class="w-full text-center border-0 bg-transparent px-1 py-1.5 text-xs font-mono-num text-slate-900 focus:outline-none">
+                <button type="button" onclick="stepLineItemQty(${idx}, 1)" class="px-2 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-100">+</button>
+              </div>
             </div>
             <div>
               <label class="block text-[11px] font-semibold text-slate-500 mb-0.5">Unit</label>
@@ -2826,7 +3115,18 @@
             </div>
           </div>
         </div>
-      `).join("");
+      `;
+      }).join("");
+    }
+
+    function stepLineItemQty(idx, delta) {
+      if (!state.invoice.items[idx]) return;
+      const nextQty = Math.max(1, (Number(state.invoice.items[idx].qty) || 1) + delta);
+      state.invoice.items[idx].qty = nextQty;
+      const inp = document.getElementById(`lineQtyInput_${idx}`);
+      if (inp) inp.value = String(nextQty);
+      saveStateToStorage();
+      renderInvoicePreview();
     }
 
     function updateLineItemField(idx, field, value) {
@@ -2957,6 +3257,26 @@
       document.getElementById("previewTaxRuleHint").textContent =
         `${getStateName(inv.seller.stateCode)} → ${getStateName(inv.client.stateCode)} • ${calc.supplyType}`;
       document.getElementById("mobileQuickTotal").textContent = formatINR(calc.roundedGrandTotal);
+      const mobileTaxPill = document.getElementById("mobileTaxModePill");
+      if (mobileTaxPill) {
+        mobileTaxPill.textContent = calc.isExemptDoc ? "0% GST" : (calc.isIntraState ? "CGST+SGST" : "IGST");
+      }
+      // Update live line item total badges in the editor without re-rendering inputs
+      calc.computedItems.forEach((compItem, idx) => {
+        const itemBadge = document.getElementById(`lineItemTotalBadge_${idx}`);
+        if (itemBadge) itemBadge.textContent = formatINR(compItem.lineTotal);
+      });
+      // Update Mobile Accordion Section Summaries
+      const sumMeta = document.getElementById("secSummaryMeta");
+      if (sumMeta) sumMeta.textContent = `${inv.number || "—"} • ${inv.docType} • ${inv.paymentStatus}`;
+      const sumSeller = document.getElementById("secSummarySeller");
+      if (sumSeller) sumSeller.textContent = `${(inv.seller.name || "").slice(0, 28)} • ${getStateName(inv.seller.stateCode)}`;
+      const sumClient = document.getElementById("secSummaryClient");
+      if (sumClient) sumClient.textContent = `${inv.client.name || "Walk-in"} • POS: ${getStateName(inv.client.stateCode)}`;
+      const sumItems = document.getElementById("secSummaryItems");
+      if (sumItems) sumItems.textContent = `${inv.items.length} service(s) • Total ${formatINR(calc.roundedGrandTotal)}`;
+      const sumBank = document.getElementById("secSummaryBank");
+      if (sumBank) sumBank.textContent = `${(inv.bank.name || "Bank").split("—")[0].trim()} • ${inv.bank.upiId || "UPI QR"}`;
 
       const logoBlock = getLogoHtml(cust, inv.seller.name);
       const isRightLogo = cust.logoPosition === "right";
@@ -3245,6 +3565,9 @@
       window.__printSyncTimer = setTimeout(() => {
         try {
           mountPrintRootAndPreviewModal(false).catch(() => {});
+          if (window.innerWidth < 1024 && !document.getElementById("previewPane")?.classList.contains("mobile-pane-hidden")) {
+            syncMobileA4PreviewMode().catch(() => {});
+          }
         } catch (err) {}
       }, 60);
     }
@@ -3663,6 +3986,8 @@
 
     function renderHistoryView() {
       document.getElementById("historyCountBadge").textContent = String(state.savedInvoices.length);
+      const mHistBadge = document.getElementById("mobileNavHistBadge");
+      if (mHistBadge) mHistBadge.textContent = String(state.savedInvoices.length);
 
       const filtered = getFilteredSavedInvoices();
       const totalInv = filtered.reduce((acc, x) => acc + (Number(x.grandTotal) || 0), 0);
@@ -3891,6 +4216,47 @@
     // =========================================================================
     // 12. NAVIGATION TABS, PDF EXPORT, PRINT & JSON BACKUP
     // =========================================================================
+    let mobileA4FitEnabled = true;
+
+    function updateMobileBottomNavHighlight(activeKey) {
+      const map = {
+        builder: document.getElementById("mNavBtnBuilder"),
+        preview: document.getElementById("mNavBtnPreview"),
+        templates: document.getElementById("mNavBtnTemplates"),
+        history: document.getElementById("mNavBtnHistory"),
+        customize: document.getElementById("mNavBtnCustomize")
+      };
+      Object.keys(map).forEach(k => {
+        if (!map[k]) return;
+        if (k === activeKey) {
+          map[k].classList.add("active");
+        } else {
+          map[k].classList.remove("active");
+        }
+      });
+      const jumpBar = document.getElementById("mobileBuilderJumpBar");
+      if (jumpBar) {
+        if (activeKey === "builder") {
+          jumpBar.classList.remove("hidden");
+        } else {
+          jumpBar.classList.add("hidden");
+        }
+      }
+    }
+
+    function handleMobileBottomNav(target) {
+      if (target === "preview") {
+        setMobilePane("preview");
+        updateMobileBottomNavHighlight("preview");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+      setMobilePane("controls");
+      switchWorkspaceTab(target);
+      updateMobileBottomNavHighlight(target);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     function switchWorkspaceTab(tabName) {
       state.activeTab = tabName;
       const views = {
@@ -3916,6 +4282,17 @@
         }
       });
 
+      const controls = document.getElementById("controlsPane");
+      const preview = document.getElementById("previewPane");
+      if (controls) controls.classList.remove("mobile-pane-hidden", "hidden");
+      if (preview) preview.classList.add("mobile-pane-hidden");
+      const btnCtrl = document.getElementById("mobileViewControlsBtn");
+      const btnPrev = document.getElementById("mobileViewPreviewBtn");
+      if (btnCtrl) btnCtrl.className = "px-2 py-1 rounded-md text-[11px] font-semibold bg-indigo-600 text-white";
+      if (btnPrev) btnPrev.className = "px-2 py-1 rounded-md text-[11px] font-semibold text-slate-300";
+
+      updateMobileBottomNavHighlight(tabName);
+
       if (tabName === "builder") {
         populateQuickTemplatesPicker();
         populateSavedClientsDropdown();
@@ -3931,15 +4308,144 @@
       const btnPrev = document.getElementById("mobileViewPreviewBtn");
 
       if (pane === "preview") {
-        controls.classList.add("hidden", "lg:block");
-        preview.classList.remove("hidden");
-        btnPrev.className = "px-2.5 py-1 rounded-md font-semibold bg-indigo-600 text-white";
-        btnCtrl.className = "px-2.5 py-1 rounded-md font-semibold text-slate-300";
+        controls.classList.add("mobile-pane-hidden");
+        preview.classList.remove("mobile-pane-hidden", "hidden");
+        btnPrev.className = "px-2 py-1 rounded-md text-[11px] font-semibold bg-indigo-600 text-white";
+        btnCtrl.className = "px-2 py-1 rounded-md text-[11px] font-semibold text-slate-300";
+        updateMobileBottomNavHighlight("preview");
+        syncMobileA4PreviewMode();
       } else {
-        controls.classList.remove("hidden");
-        btnCtrl.className = "px-2.5 py-1 rounded-md font-semibold bg-indigo-600 text-white";
-        btnPrev.className = "px-2.5 py-1 rounded-md font-semibold text-slate-300";
+        controls.classList.remove("mobile-pane-hidden", "hidden");
+        preview.classList.add("mobile-pane-hidden");
+        btnCtrl.className = "px-2 py-1 rounded-md text-[11px] font-semibold bg-indigo-600 text-white";
+        btnPrev.className = "px-2 py-1 rounded-md text-[11px] font-semibold text-slate-300";
+        updateMobileBottomNavHighlight(state.activeTab || "builder");
       }
+    }
+
+    function toggleBuilderSection(secId, forceExpand = null) {
+      const el = document.getElementById(secId);
+      if (!el) return;
+      if (forceExpand === true) {
+        el.classList.remove("section-collapsed");
+      } else if (forceExpand === false) {
+        el.classList.add("section-collapsed");
+      } else {
+        el.classList.toggle("section-collapsed");
+      }
+      updateCollapseAllBtnLabel();
+    }
+
+    function jumpToBuilderSection(secId) {
+      if (state.activeTab !== "builder") {
+        switchWorkspaceTab("builder");
+      }
+      setMobilePane("controls");
+      const el = document.getElementById(secId);
+      if (!el) return;
+      if (window.innerWidth < 1024) {
+        document.querySelectorAll(".builder-accordion-card").forEach(card => {
+          if (card.id === secId) {
+            card.classList.remove("section-collapsed");
+          } else {
+            card.classList.add("section-collapsed");
+          }
+        });
+      } else {
+        el.classList.remove("section-collapsed");
+      }
+      document.querySelectorAll(".step-pill-btn").forEach(btn => {
+        if (btn.getAttribute("data-step-target") === secId) {
+          btn.classList.add("active-step");
+        } else {
+          btn.classList.remove("active-step");
+        }
+      });
+      updateCollapseAllBtnLabel();
+      setTimeout(() => {
+        const y = el.getBoundingClientRect().top + window.scrollY - 135;
+        window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+      }, 40);
+    }
+
+    function toggleAllBuilderSections() {
+      const cards = Array.from(document.querySelectorAll(".builder-accordion-card"));
+      const allExpanded = cards.every(c => !c.classList.contains("section-collapsed"));
+      cards.forEach(c => {
+        if (allExpanded) c.classList.add("section-collapsed");
+        else c.classList.remove("section-collapsed");
+      });
+      updateCollapseAllBtnLabel();
+    }
+
+    function updateCollapseAllBtnLabel() {
+      const btn = document.getElementById("btnToggleAllSections");
+      if (!btn) return;
+      const cards = Array.from(document.querySelectorAll(".builder-accordion-card"));
+      const allExpanded = cards.every(c => !c.classList.contains("section-collapsed"));
+      btn.textContent = allExpanded ? "Collapse All" : "Show All";
+    }
+
+    async function syncMobileA4PreviewMode() {
+      const mobileSheetBox = document.getElementById("mobileA4SheetPreviewBox");
+      const domPrintArea = document.getElementById("invoicePrintArea");
+      const toggleBtn = document.getElementById("btnToggleMobileA4Scale");
+      if (!mobileSheetBox || !domPrintArea) return;
+
+      if (window.innerWidth >= 1024) {
+        mobileSheetBox.classList.add("hidden");
+        domPrintArea.classList.remove("hidden");
+        return;
+      }
+
+      if (mobileA4FitEnabled) {
+        if (toggleBtn) toggleBtn.textContent = "View: Exact A4 Sheet (Tap for Web View)";
+        mobileSheetBox.classList.remove("hidden");
+        domPrintArea.classList.add("hidden");
+        const canvases = await renderInvoiceA4Canvases();
+        mobileSheetBox.innerHTML = canvases.map((c, idx) => {
+          const dataUrl = c.toDataURL("image/png");
+          return `<div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden w-full">
+            <div class="px-3 py-1.5 bg-slate-100 border-b border-slate-200 flex items-center justify-between text-[11px] font-semibold text-slate-600">
+              <span>A4 Page ${idx + 1} of ${canvases.length}</span>
+              <span>Pinch to zoom</span>
+            </div>
+            <img src="${dataUrl}" alt="A4 Invoice Sheet Page ${idx + 1}" class="w-full h-auto block">
+          </div>`;
+        }).join("");
+      } else {
+        if (toggleBtn) toggleBtn.textContent = "View: Web Layout (Tap for A4 Sheet)";
+        mobileSheetBox.classList.add("hidden");
+        domPrintArea.classList.remove("hidden");
+      }
+    }
+
+    function toggleMobileA4FitScale() {
+      mobileA4FitEnabled = !mobileA4FitEnabled;
+      syncMobileA4PreviewMode();
+    }
+
+    async function shareOrDownloadInvoicePdf() {
+      try {
+        showToast("Preparing GST Invoice PDF...", "info");
+        const canvases = await mountPrintRootAndPreviewModal(false);
+        const safeFileName = (state.invoice.number || "GST-Invoice").replace(/[^a-zA-Z0-9_-]/g, "_") + ".pdf";
+        const pdfBlob = buildPdfBlobFromCanvases(canvases);
+        const pdfFile = new File([pdfBlob], safeFileName, { type: "application/pdf" });
+
+        if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+          await navigator.share({
+            title: `GST Invoice ${state.invoice.number}`,
+            text: `GST Invoice ${state.invoice.number} from ${state.invoice.seller.name}`,
+            files: [pdfFile]
+          });
+          showToast("Shared GST Invoice PDF!", "emerald");
+          return;
+        }
+      } catch (err) {
+        if (err && err.name === "AbortError") return;
+      }
+      downloadInvoicePdf();
     }
 
     // =========================================================================
@@ -5530,7 +6036,14 @@
       pullStateFromCloudSync,
       disconnectCloudSync,
       copyGoogleAppsScriptCode,
-      triggerAndroidPwaInstall
+      triggerAndroidPwaInstall,
+      stepLineItemQty,
+      handleMobileBottomNav,
+      toggleBuilderSection,
+      jumpToBuilderSection,
+      toggleAllBuilderSections,
+      toggleMobileA4FitScale,
+      shareOrDownloadInvoicePdf
     });
 
     function runSafeBootStep(fn) {
@@ -5556,6 +6069,11 @@
       runSafeBootStep(renderHistoryView);
       runSafeBootStep(renderInvoicePreview);
       runSafeBootStep(hydrateAsyncPersistenceOnBoot);
+      // On phone screens (< 1024px), collapse Seller Profile & Bank sections by default so Invoice Info, Client & Services are front-and-center
+      if (window.innerWidth < 1024) {
+        toggleBuilderSection("secSellerProfile", false);
+        toggleBuilderSection("secBankTerms", false);
+      }
     }
 
     // Boot immediately since <script> is at the bottom of <body>, with DOMContentLoaded & load fallbacks
